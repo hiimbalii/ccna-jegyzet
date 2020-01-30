@@ -1,0 +1,74 @@
+%eleje
+\documentclass[a4paper]{report}
+\title{CCNA jegyzet}
+\author{Tóth Balázs}
+\date{2019/11/20}
+
+
+%alap package
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[magyar]{babel}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs} %táblázat
+\usepackage{enumitem} %felsorolás
+
+\usepackage{parskip}
+\usepackage{emptypage}
+
+%\hr egy vonalhoz
+\newcommand\hr{
+    \noindent\rule[0.5ex]{\linewidth}{0.5pt}
+}
+
+%Színes dobozok alap
+\makeatother
+\usepackage{mdframed}
+
+\usepackage{xifthen}
+
+%élőfej élőláb
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE]{\leftmark}
+\fancyhead[LO]{\rightmark}
+\fancyfoot[RO,LE]{\thepage}
+\fancypagestyle{plain}{%  the preset of fancyhdr 
+    \fancyhf{} % clear all header and footer fields
+    \fancyfoot[C]{\textbf{\thepage}} % except the center
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+\usepackage{xcolor}
+
+%Színes dobozok better
+\usepackage{tcolorbox}
+\newenvironment{parancs}{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    title=Parancsok,
+    colframe=red!60!black,
+]}{\end{tcolorbox}}
+\newenvironment{info}[1][info]{\begin{tcolorbox}[
+    arc=0mm,
+    colback=white,
+    title= #1,
+    colframe=blue!60!black,
+]}{\end{tcolorbox}}
+
+\begin{document}
+
+   \maketitle
+   \tableofcontents
+   \pagebreak
+
+   
+   %Fejezetek
+   \input{fejezet1.tex}
+   \input{fejezet2.tex}
+
+\end{document}

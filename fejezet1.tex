@@ -1,0 +1,25 @@
+\chapter{Használat}
+\section{Kapcsolódás az eszközhöz}
+\begin{itemize}
+\item{Soros port: Fizikailag}
+\item{Telnet/SSH: Neten keresztül (SSH az újabb biztonságosabb)}
+\item{AUX: Analóg telefonvonal}
+\end{itemize}
+\section{Módok}
+Az alap \emph{User} móddal nem jutunk nagyon sokáig ezért legtöbbször rögtön az
+\verb|en| vagy \verb|enable| paranccsal szoktunk indítani, az \emph{EXEC} módba lépéshez, ahol több jogunk van.
+Innen gyakran a \verb|conf t| azaz \verb|configure terminal| paranccsal folytatjuk a \emph{globális konfigurációs mód}ba lépéshez.
+
+\begin{info}[Kinézet]
+Amúgy könnyen látni, hogy milyen módban vagyunk, attól függően, hogy mi van az eszköz neve mögött. 
+
+
+Példák Switch nevű eszközön:
+
+\textbf{User mód:} \verb|Switch>|
+
+\textbf{EXEC mód:} \verb|Switch#|
+
+\textbf{Global config mód:} \verb|Switch (config)#|
+
+\end{info}

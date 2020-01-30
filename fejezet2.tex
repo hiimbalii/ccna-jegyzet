@@ -1,0 +1,128 @@
+\chapter{Hálózati oprendszer konfigurálása}
+\section{Állomásnév}
+Az első parancs viszonylag egyszerű, az állomásnevet állíthatjuk. Ez egy jobb hálózaton hasznos, jelenleg pedig a CLIben látjuk a hatását.
+
+Érdemes egyébként célszerű neveket adni: Például \emph{Switch-Floor-1}
+   A \verb|hostname <név>| paranccsal lehet állítani.
+
+   Példa:
+\begin{parancs}
+   \begin{enumerate}
+	\item \verb|en| 
+	\item \verb|conf t|
+	\item \verb|hostname cisco|
+   \end{enumerate}
+\end{parancs}
+   Eredmény:
+
+   \verb|cisco#| fogad majd minket
+
+
+Visszavonni a \verb|no hostname| paranccsal lehet, a no szó általában amúgy hasznos lesz.
+
+\section{Biztonság}
+
+\subsection{Enable jelszó}
+Enable módban sok jogunk van ezért érdemes lejelszavazni. Ezt lehet \emph{sima} vagy \emph{secret} itt a különbség, hogy a \emph{secret} titkosítva tárolja a jelszót.
+
+Egy nem secret jelszó beállítása:
+\begin{parancs}
+\begin{enumerate}
+	\item \verb|en| 
+	\item \verb|conf t|
+	\item \verb|enable secret <jelszó>|
+\end{enumerate}
+
+\end{parancs}
+Hogy ezt kipróbálhassuk lépjünk ki a \verb|disable| paranccsal, majd próbáljunk újra belépni!
+
+\subsection{Console és VTY jelszó}
+Érdemes beállítani jelszót a konzolos hozzáférésre, és virtuális terminálra is.
+Ez sem nehéz:
+\begin{parancs}
+\begin{enumerate}
+	\item \verb|en| 
+	\item \verb|conf t|
+	\item \verb|line console 0| vagy \verb|line vty 0 15|, attól függően, hogy hol akarjuk. (a számok a portot jelölik: ált. 1 console line van, és 16 vty vonal, de ezek változhetnak)
+	\item \verb|password <jelszó>|
+	\item \verb|login| Ne felejtsük el!
+	\item \verb|exit| (már ha nincs több dolgunk)
+\end{enumerate}
+
+\end{parancs} 
+Amúgy a 3. pontot érdemes memorizálni, mert még használjuk majd ;)
+
+
+Fontos hogy ezek amúgy titkosítatlan jelszavak, szóval érdemes ez ellen tenni (Ez csak a konfigurációs állományban levő jelszavakra vonatkozik!)
+\begin{parancs}
+\begin{enumerate}
+	\item \verb|en| 
+	\item \verb|conf t|
+	\item \verb|service password-encryption|
+\end{enumerate}
+
+\end{parancs} 
+Ez (meg amúgy sok minden más) látható a \verb|show running-config| vagy \verb|show startup-config| paranccsal.
+
+\section{Banner}
+Kevésbé izgalmas téma, de fontos, mert néhol ki \emph{ kell }írni, dolgokat.
+
+A MOTD (Message Of The Day) rögtön loginkor megjelenik.
+Ennek beállítása:
+
+(ja meg disclaimer: az \emph{en;conf t}-t mindenki képzelje oda nem írom le többet.)
+\begin{parancs}
+\verb|banner motd # <üzenet> #|
+
+(a \verb|#| \emph{nem} lesz benne a szövegben, aközé gépelhetsz.)
+\end{parancs}
+
+\section{Mentés\&Reset}
+Alapvetően 2 config file van: a running és a startup.
+
+Az előbbi az aktuális, míg a másik az induláskor lép életbe. Ha azt akarjuk, hogy ne vesszenek el a változtatásaink le kell menteni őket a startup configba.
+
+Így:
+\begin{parancs}
+    \verb|copy running-config startup-config|
+\end{parancs}
+
+ Ha valamit ordassan elrontunk tudjuk mind2 configot resetelni:
+\begin{parancs}
+	Ezeket EXEC módban adjuk ki:
+
+	\verb|reload| a runninghoz (itt majd el kell fogadni)
+
+	\verb|erase startup-config| gondolom ez evidens.
+
+	\verb|delete vlan.dat| ez meg switcheken egy hasznos parancs
+\end{parancs}
+
+Gépre lementeni meg ugye: rámegyünk puttyal és kimásoljuk a configot (show után)
+
+\section{Címzés}
+\subsection{IP címek}
+4 darab 0-255 közötti szám
+
+Hatrozik hozzá egy alhálózati(subnet) maszk: Meghatározza, hogy az eszköz a nagy hálózat melyik alhálózatához tartozik. 
+
+Lehet rendelni fizikai porthoz és virtuális interfészhez.
+
+\subsection{Portok és interfészek}
+Fizikai és virtuális portok; Alapból 1: \verb|VLAN1|
+
+\subsection{Kapcsolók címzése (IPv4)}
+A távoli eléréshez IP-cím és subnet mask kell.
+
+Hogyan konfiguráld:
+\begin{parancs}
+	\verb|interface vlan 1|- globálisból inteface config módba vált
+	\verb|ip address <ip cím> <subnet mask>| IP cím és alhálózati maszk beállítás
+	\verb|no shutdown| vagy \verb|no shu| ne felejtsük el bekapcsolni
+\end{parancs}
+
+\subsection{Ellenőrzés}
+Legegyszerűbben a ping paranccsal tudjuk a legtöbb eszközön ellenőrizni a kapcsolatot. Erről nem szeretnék sokat írni: \verb|ping <ip cím>|
+
+A kapcsoló interfaceit a \verb|show ip interface brief| paranccsal nézhetjük meg.
+
